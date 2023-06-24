@@ -1,3 +1,4 @@
+const Course = require("../../db/models/Course");
 const Lecture = require("../../db/models/Lecture");
 
 exports.fetchLectureById = async (lectureId) => {
@@ -8,7 +9,7 @@ exports.fetchLectureById = async (lectureId) => {
 exports.getAllLectures = async (req, res, next) => {
   try {
     // Populate Here
-    const lectures = await Lecture.find();
+    const lectures = await Lecture.find().populate("course");
     return res.status(200).json(lectures);
   } catch (error) {
     return next(error);
@@ -51,3 +52,15 @@ exports.deleteLectureById = async (req, res, next) => {
 };
 
 // Add extra controllers here
+
+exports.addToCourse = async (req, res, next) => {
+  try {
+    await req.lecture.updateOne(req.body);
+    await Course.findByIdAndUpdate(req.body.course, {
+      $push: { lectures: req.lecture._id },
+    });
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+};

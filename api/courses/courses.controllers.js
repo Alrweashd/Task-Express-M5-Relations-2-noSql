@@ -8,7 +8,7 @@ exports.fetchCourseById = async (courseId) => {
 exports.getAllCourses = async (req, res, next) => {
   try {
     // Populate here
-    const courses = await Course.find();
+    const courses = await Course.find().populate("lectures");
     return res.status(200).json(courses);
   } catch (error) {
     return next(error);
@@ -51,4 +51,3 @@ exports.deleteCourseById = async (req, res, next) => {
 };
 
 // Add extra controllers here
-

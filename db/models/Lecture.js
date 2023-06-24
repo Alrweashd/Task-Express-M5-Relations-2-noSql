@@ -4,6 +4,7 @@ const lectureSchema = new Schema(
   {
     name: { type: String, required: true },
     // Add relation here
+    course: { type: Schema.Types.ObjectId, ref: "Course" },
   },
   { timestamps: true }
 );
